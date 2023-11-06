@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Add Task for <%=name%></title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1>Add Task for <%=name%></h1>
+    <form method="POST" action="/addtask">
+        <p>Task Name: <input id="taskName" type="text" name="taskName"/></p>
+        <p>Course <input id="course" type="text" name="course"/></p>
+        <p>Due Date: <input id="dueDate" type="date" name="dueDate"/></p>
+        <p>Time Start: <input id ="start" type="time" name="startTime"/></p>
+        <p>Time End: <input id="end" type="time" name="endTime"/></p>
+        <p>Priority: 
+           <select id="priority" name="priority">
+               <option value="low">Low</option>
+               <option value="medium">Medium</option>
+               <option value="high">High</option>
+           </select>
+        </p>
+        <input type="submit" value="Add Task" />
+      </form>
+  </body>
+</html>
