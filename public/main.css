@@ -1,0 +1,10 @@
+a:visited, a:link, a:active {
+    text-decoration: none;
+    color: cadetblue;
+}
+a:hover {
+    color: aquamarine;
+}
+body {
+    background-color: antiquewhite;
+}
