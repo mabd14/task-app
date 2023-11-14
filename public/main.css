@@ -1,10 +1,39 @@
 a:visited, a:link, a:active {
     text-decoration: none;
-    color: cadetblue;
+    color: rgb(206,214,243);
 }
 a:hover {
-    color: aquamarine;
+    color: rgb(145,252,220);
 }
 body {
-    background-color: antiquewhite;
+    background-color: rgb(14,25,45);
+    color: rgb(206,214,243);
+    font-family: 'NTR', sans-serif;
 }
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none; /* Assuming you want to remove bullet points */
+}
+
+.menu li {
+    transform: translateX(500%);
+    animation: fadeInUp ease 1s forwards 1.2s;
+    opacity: 0;
+    display: inline-block;
+    margin-right: 10px;
+    /* margin-left: auto; is not necessary here */
+}
+
+
+@keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #welcome {
+    font-size: 50px;
+  }

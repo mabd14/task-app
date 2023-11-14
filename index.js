@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 const path = require('path');
 
 
+
 // Create the Express application
 const app = express();
 const port = 8000;
@@ -20,6 +21,7 @@ app.use(session({
         expires: 600000
     }
 }));
+
 
 // Define the database connection
 const db = mysql.createConnection ({
@@ -48,7 +50,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Define shop data
-var taskData = { name: "Scholar Flow" };
+var taskData = { name: "Scholar Flow"};
 
 // Require and use your routes
 require("./routes/main")(app, taskData);

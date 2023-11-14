@@ -5,6 +5,14 @@
     <link rel="stylesheet"  type="text/css" href="/main.css" />
   </head>
   <body>
+    <header>
+      <div class="menu">
+        <li><a href="/">Home</a></li>
+      <li><a href="addtasks">Add Tasks</a></li>
+      <li><a href="viewtasks">View Tasks</a></li>
+      <li><a href="logout">Logout</a></li>
+    </div>
+    </header>
     <h1>Add Task for <%=name%></h1>
     <form method="POST" action="/addtask">
         <p>Task Name: <input id="taskName" type="text" name="taskName"/></p>

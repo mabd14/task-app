@@ -1,16 +1,31 @@
 <!doctype html>
 <html>
   <head>
+    <link href="https://fonts.googleapis.com/css2?family=NTR&display=swap" rel="stylesheet">
     <title>Welcome to <%=name%></title>
-    <link rel="stylesheet"  href="/main.css" />
+    <link rel="stylesheet" href="/main.css" />
   </head>
+  
   <body>
-    <h1>Welcome to <%=name%></h1>
-    <p><a href="about">About <%=name%></a></p>
-    <p><a href="addtasks">Add Tasks</a></p>
-    <p><a href="viewtasks">View Tasks</a></p>
-    <p><a href="register"> Register</a></p>
-    <p><a href="login" >Login</a></p>
-    <p> <a href="logout">Logout</a></p>
+    <header>
+      <div class="menu">
+          <% if (username) { %>
+            <li><a href="/">Home</a></li>
+            <li><a href="addtasks">Add Tasks</a></li>
+            <li><a href="viewtasks">View Tasks</a></li>
+            <li><a href="logout">Logout</a></li>
+          <% } else { %>
+            <li><a href="/">Home</a></li>
+            <li><a href="register">Register</a></li>
+            <li><a href="login">Login</a></li>
+            <% } %>
+      </div>
+    </header>
+
+    <% if (username) { %>
+      <h1 id ="welcome">Weclome Back <%=(username)%></h1>
+      <% } else { %>
+    <h1 id = "welcome">Welcome to <%=name%></h1>
+    <% } %>
   </body>
 </html>

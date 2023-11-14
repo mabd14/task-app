@@ -6,14 +6,23 @@ module.exports = function(app, taskData) {
           res.redirect('./login')
         } else { next (); }
     }
-
-    app.get('/',function(req,res){
-        res.render('index.ejs', taskData);
+    app.use(function (req, res, next) {
+        res.locals.session = req.session;
+        next();
     });
 
-    app.get('/about',redirectLogin,function(req,res) {
-        res.render('about.ejs',taskData);
+
+    
+
+    app.get('/', function(req, res) {
+        const data = {
+            ...taskData,
+            username: req.session.userId || null
+        };
+        res.render('index.ejs',data)
     });
+    
+
 
     app.get('/register',function(req,res) {
         res.render('register.ejs',taskData);
@@ -41,9 +50,7 @@ module.exports = function(app, taskData) {
                         return console.error(err.message);
                     }
                     else {
-                        result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email;
-                        result += 'Your password is: '+ req.body.password +' and your hashed password is: '+ hashedPassword;
-                        res.send(result);
+                        res.redirect('/')
                     
     
                     
@@ -85,7 +92,7 @@ module.exports = function(app, taskData) {
 
                 if (isMatch) {
                     req.session.userId = req.body.username;
-                    res.send("Welcome " + req.body.username + "!")
+                    res.redirect('/');
                 } else {
                     res.status(401).send("Incorrect Password!");
                 }
@@ -95,7 +102,7 @@ module.exports = function(app, taskData) {
     })
 
     app.get('/viewtasks',function(req,res) {
-        res.render('viewTasks.ejs',taskData);
+        res.render('viewTasks.ejs', taskData);
     });
 
     app.get('/addtasks',function(req,res){
@@ -105,9 +112,9 @@ module.exports = function(app, taskData) {
     app.get('/logout', redirectLogin, (req,res) => {
         req.session.destroy(err => {
         if (err) {
-          return res.redirect('./')
+          return res.redirect('/')
         }
-        res.send('you are now logged out. <a href='+'./'+'>Home</a>');
+        res.redirect('/')
         })
     })
 
