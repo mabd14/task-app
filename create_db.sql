@@ -1,10 +1,38 @@
 CREATE DATABASE ScholarFlow;
 USE ScholarFlow;
-CREATE Table users (
+CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
-    username VARCHAR(50),
-    email VARCHAR(255),
+    username VARCHAR(50) UNIQUE,
+    email VARCHAR(255) UNIQUE,
     u_password VARCHAR(255)
-)
+);
+
+CREATE TABLE courses (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_name VARCHAR(255)
+);
+
+
+CREATE TABLE tasks (
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    task_name VARCHAR(255),
+    due_date DATE,
+    start_time TIME,
+    end_time TIME,
+    priority ENUM('low', 'medium', 'high'),
+    status ENUM('pending', 'completed', 'overdue') DEFAULT 'pending'
+);
+
+ALTER TABLE tasks
+ADD COLUMN course_id INT NOT NULL,
+ADD FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE;
+
+ALTER TABLE tasks
+ADD COLUMN user_id INT NOT NULL,
+ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
+
+
+
+

@@ -1,25 +1,34 @@
 <!doctype html>
 <html>
   <head>
-    <title>your tasks</title>
-    <link rel="stylesheet"  type="text/css" href="/main.css" />
+    <title>Your Tasks</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
   </head>
   <body>
     <header>
       <div class="menu">
         <li><a href="/">Home</a></li>
-      <li><a href="addtasks">Add Tasks</a></li>
-      <li><a href="viewtasks">View Tasks</a></li>
-      <li><a href="logout">Logout</a></li>
-    </div>
+        <li><a href="addtasks">Add Tasks</a></li>
+        <li><a href="viewtasks">View Tasks</a></li>
+        <li><a href="logout">Logout</a></li>
+      </div>
     </header>
     <h1>Tasks</h1>
     <ul>
-        <li>Task 1</li>
-        <li>Task 2</li>
-        <li>Task 3</li>
-
+      <% if (tasks && tasks.length > 0) { %>
+        <% tasks.forEach(function(task) { %>
+          <li>
+            <strong>Task Name:</strong> <%= task.task_name %> <br>
+            <strong>Due Date:</strong> <%= task.due_date %> <br>
+            <strong>Start Time:</strong> <%= task.start_time %> <br>
+            <strong>End Time:</strong> <%= task.end_time %> <br>
+            <strong>Priority:</strong> <%= task.priority %> <br>
+            <strong>Status:</strong> <%= task.status %>
+          </li>
+        <% }) %>
+      <% } else { %>
+        <li>No tasks found.</li>
+      <% } %>
     </ul>
-
   </body>
 </html>

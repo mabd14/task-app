@@ -1,24 +1,43 @@
 <!doctype html>
 <html>
   <head>
-    <title>Add Task for <%=name%></title>
-    <link rel="stylesheet"  type="text/css" href="/main.css" />
+    <title>Add Task for <%= name %></title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+
+    <script>
+      function validateForm() {
+        var dueDate = document.getElementById('dueDate').value;
+        var endTime = document.getElementById('end').value;
+
+        // Combine due date and end time for comparison
+        var dueDateTime = new Date(dueDate + 'T' + endTime);
+
+        if (dueDateTime < new Date()) {
+          alert('End time must be after the current time.');
+          return false;
+        }
+
+        return true;
+      }
+    </script>
+
+    
   </head>
   <body>
     <header>
       <div class="menu">
         <li><a href="/">Home</a></li>
-      <li><a href="addtasks">Add Tasks</a></li>
-      <li><a href="viewtasks">View Tasks</a></li>
-      <li><a href="logout">Logout</a></li>
-    </div>
+        <li><a href="addtasks">Add Tasks</a></li>
+        <li><a href="viewtasks">View Tasks</a></li>
+        <li><a href="logout">Logout</a></li>
+      </div>
     </header>
-    <h1>Add Task for <%=name%></h1>
-    <form method="POST" action="/addtask">
+    <h1>Add Task for <%= name %></h1>
+    <form method="POST" action="/addedtask">
         <p>Task Name: <input id="taskName" type="text" name="taskName"/></p>
-        <p>Course <input id="course" type="text" name="course"/></p>
+        <p>Course: <input id="course" type="text" name="course"/></p>
         <p>Due Date: <input id="dueDate" type="date" name="dueDate"/></p>
-        <p>Time Start: <input id ="start" type="time" name="startTime"/></p>
+        <p>Time Start: <input id="start" type="time" name="startTime"/></p>
         <p>Time End: <input id="end" type="time" name="endTime"/></p>
         <p>Priority: 
            <select id="priority" name="priority">
@@ -27,7 +46,14 @@
                <option value="high">High</option>
            </select>
         </p>
+        <p>Status: 
+           <select id="status" name="status">
+               <option value="pending">Pending</option>
+               <option value="completed">Completed</option>
+               <option value="overdue">Overdue</option>
+           </select>
+        </p>
         <input type="submit" value="Add Task" />
-      </form>
+    </form>
   </body>
 </html>

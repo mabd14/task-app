@@ -69,7 +69,7 @@ module.exports = function(app, taskData) {
 
     app.post('/loggedin', function(req,res) {
         const bcrypt = require('bcrypt');
-        let sqlquery = "SELECT u_password FROM users WHERE username = ?";
+        let sqlquery = "SELECT u_password, user_id FROM users WHERE username = ?";
         let user = [req.body.username];
 
         db.query(sqlquery,user, (err,result) => {
@@ -92,6 +92,8 @@ module.exports = function(app, taskData) {
 
                 if (isMatch) {
                     req.session.userId = req.body.username;
+                    req.session.userDbId = result[0].user_id;
+                    console.log('user_id: ' + req.session.userDbId)
                     res.redirect('/');
                 } else {
                     res.status(401).send("Incorrect Password!");
@@ -101,13 +103,52 @@ module.exports = function(app, taskData) {
 
     })
 
-    app.get('/viewtasks',function(req,res) {
-        res.render('viewTasks.ejs', taskData);
+    app.get('/viewtasks', redirectLogin, function(req, res) {
+        const loggedInUserId = req.session.userDbId; // Retrieve the logged-in user's ID from the session
+    
+        // Query to get tasks for the logged-in user
+        const getTasksQuery = 'SELECT * FROM tasks WHERE user_id = ?';
+        db.query(getTasksQuery, [loggedInUserId], (err, tasks) => {
+            if (err) {
+                console.error('Error fetching tasks:', err);
+                return res.status(500).send('Error fetching tasks');
+            }
+    
+            // Now 'tasks' contains only the tasks created by the logged-in user
+            // Render these tasks in your view
+            res.render('viewTasks.ejs', { tasks: tasks });
+        });
     });
+    
 
     app.get('/addtasks',function(req,res){
         res.render('addTasks.ejs',taskData);
     });
+
+    app.post('/addedtask', function(req, res) {
+        // Inserting a new course
+        const insertCourseQuery = 'INSERT INTO courses (course_name) VALUES (?)';
+        db.query(insertCourseQuery, [req.body.course], (err, courseResult) => {
+            if (err) {
+                console.error('Error adding course:', err);
+                return res.status(500).send('Error adding course');
+            }
+    
+            const courseId = courseResult.insertId; // Get the ID of the newly inserted course
+    
+            // Now insert the task with the course_id
+            const insertTaskQuery = 'INSERT INTO tasks (user_id,course_id, task_name, due_date, start_time, end_time, priority, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            db.query(insertTaskQuery, [req.session.userDbId,courseId, req.body.taskName, req.body.dueDate, req.body.startTime, req.body.endTime, req.body.priority, req.body.status], (err, taskResult) => {
+                if (err) {
+                    console.error('Error adding task:', err);
+                    return res.status(500).send('Error adding task');
+                }
+                res.redirect('/viewtasks'); // Redirect to the view tasks page or another appropriate page
+            });
+        });
+    });
+    
+    
 
     app.get('/logout', redirectLogin, (req,res) => {
         req.session.destroy(err => {
