@@ -106,16 +106,17 @@ module.exports = function(app, taskData) {
     app.get('/viewtasks', redirectLogin, function(req, res) {
         const loggedInUserId = req.session.userDbId; // Retrieve the logged-in user's ID from the session
     
-        // Query to get tasks for the logged-in user
-        const getTasksQuery = 'SELECT tasks.*, courses.course_name FROM tasks INNER JOIN courses ON tasks.course_id = courses.course_id WHERE tasks.user_id = ?';
-        db.query(getTasksQuery, [loggedInUserId], (err, tasks) => {
+        // Using the stored procedure
+        const callProcedure = 'CALL GetTasksForUser(?)';
+        db.query(callProcedure, [loggedInUserId], (err, results) => {
             if (err) {
                 console.error('Error fetching tasks:', err);
                 return res.status(500).send('Error fetching tasks');
             }
-            res.render('viewTasks.ejs', { tasks: tasks });
+            res.render('viewTasks.ejs', { tasks: results[0] });
         });
     });
+    
     
 
     app.get('/addtasks',redirectLogin,function(req,res){

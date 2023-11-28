@@ -34,6 +34,18 @@ ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 
 
+DELIMITER $$
+
+CREATE PROCEDURE GetTasksForUser(IN user_id INT)
+BEGIN
+    SELECT tasks.*, courses.course_name 
+    FROM tasks 
+    INNER JOIN courses ON tasks.course_id = courses.course_id 
+    WHERE tasks.user_id = user_id;
+END $$
+
+DELIMITER ;
+
 
 
 -- create stored proc to see what whether it is overdue, pending or complete 
