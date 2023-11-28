@@ -49,7 +49,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Define shop data
+// Define task data
 var taskData = { name: "Scholar Flow"};
 
 // Require and use your routes

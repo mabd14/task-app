@@ -14,16 +14,15 @@ CREATE TABLE courses (
     course_name VARCHAR(255)
 );
 
-
 CREATE TABLE tasks (
     task_id INT AUTO_INCREMENT PRIMARY KEY,
     task_name VARCHAR(255),
-    due_date DATE,
-    start_time TIME,
-    end_time TIME,
+    due_date DATETIME,
+    duration INT,  -- Changed to INT to store duration in minutes
     priority ENUM('low', 'medium', 'high'),
     status ENUM('pending', 'completed', 'overdue') DEFAULT 'pending'
 );
+
 
 ALTER TABLE tasks
 ADD COLUMN course_id INT NOT NULL,
@@ -36,3 +35,8 @@ ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 
 
+
+-- create stored proc to see what whether it is overdue, pending or complete 
+-- create stored proc to show only certain subjects
+-- create stored proc to show priority
+-- to search for a specific task

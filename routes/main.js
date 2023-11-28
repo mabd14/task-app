@@ -107,21 +107,18 @@ module.exports = function(app, taskData) {
         const loggedInUserId = req.session.userDbId; // Retrieve the logged-in user's ID from the session
     
         // Query to get tasks for the logged-in user
-        const getTasksQuery = 'SELECT * FROM tasks WHERE user_id = ?';
+        const getTasksQuery = 'SELECT tasks.*, courses.course_name FROM tasks INNER JOIN courses ON tasks.course_id = courses.course_id WHERE tasks.user_id = ?';
         db.query(getTasksQuery, [loggedInUserId], (err, tasks) => {
             if (err) {
                 console.error('Error fetching tasks:', err);
                 return res.status(500).send('Error fetching tasks');
             }
-    
-            // Now 'tasks' contains only the tasks created by the logged-in user
-            // Render these tasks in your view
             res.render('viewTasks.ejs', { tasks: tasks });
         });
     });
     
 
-    app.get('/addtasks',function(req,res){
+    app.get('/addtasks',redirectLogin,function(req,res){
         res.render('addTasks.ejs',taskData);
     });
 
@@ -135,10 +132,11 @@ module.exports = function(app, taskData) {
             }
     
             const courseId = courseResult.insertId; // Get the ID of the newly inserted course
+            const courseList = 'SELECT course_name from courses';
     
             // Now insert the task with the course_id
-            const insertTaskQuery = 'INSERT INTO tasks (user_id,course_id, task_name, due_date, start_time, end_time, priority, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-            db.query(insertTaskQuery, [req.session.userDbId,courseId, req.body.taskName, req.body.dueDate, req.body.startTime, req.body.endTime, req.body.priority, req.body.status], (err, taskResult) => {
+            const insertTaskQuery = 'INSERT INTO tasks (user_id,course_id, task_name, due_date, duration, priority, status) VALUES (?, ?, ?, ?, ?, ?, ?)';
+            db.query(insertTaskQuery, [req.session.userDbId,courseId, req.body.taskName, req.body.dueDate, req.body.durationMinutes, req.body.priority, req.body.status], (err, taskResult) => {
                 if (err) {
                     console.error('Error adding task:', err);
                     return res.status(500).send('Error adding task');
@@ -147,6 +145,46 @@ module.exports = function(app, taskData) {
             });
         });
     });
+
+    app.post('/updateTaskStatus', function(req, res) {
+        const taskId = req.body.taskId;
+        const newStatus = req.body.newStatus;
+      
+        // SQL query to update the status
+        const sql = `UPDATE tasks SET status = ? WHERE task_id = ?`;
+        
+        // Execute the query
+        // (Assuming 'db' is your database connection variable)
+        db.query(sql, [newStatus, taskId], function(err, result) {
+          if (err) {
+            // Handle the error
+            console.error(err);
+            return res.send('Error updating status');
+          }
+      
+          // Redirect back to the tasks page or handle as needed
+          res.redirect('/viewtasks');
+        });
+      });
+
+      app.post('/deleteTask',function(req,res) {
+        const taskId = req.body.taskId;
+        const newStatus = req.body.newStatus;
+
+        const sqlquery = 'DELETE FROM tasks WHERE task_id = ?';
+
+        db.query(sqlquery,[taskId], function(err,results) {
+            if(err) {
+                console.error(err);
+                console.error("Error occurred while deleting the task:", error);
+                res.status(500).send("An error occurred while deleting the task.");
+            } else {
+                res.redirect('/viewtasks')
+            }
+
+        })
+      })
+      
     
     
 
