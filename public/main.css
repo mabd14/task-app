@@ -129,3 +129,17 @@ input[type=submit]:hover {
         flex-direction: column;
     }
 }
+
+#progressBarContainer {
+    width: 100%;
+    background-color: #ddd;
+  }
+  
+  #progressBar {
+    height: 30px;
+    background-color: #4CAF50;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+  }
+  
