@@ -113,14 +113,14 @@ module.exports = function(app, taskData) {
                 console.error('Error fetching tasks:', err);
                 return res.status(500).send('Error fetching tasks');
             }
-            res.render('viewTasks.ejs', { tasks: results[0] });
+            res.render('viewtasks.ejs', { tasks: results[0] });
         });
     });
     
     
 
     app.get('/addtasks',redirectLogin,function(req,res){
-        res.render('addTasks.ejs',taskData);
+        res.render('addtasks.ejs',taskData);
     });
 
     app.post('/addedtask', function(req, res) {
@@ -142,7 +142,7 @@ module.exports = function(app, taskData) {
                     console.error('Error adding task:', err);
                     return res.status(500).send('Error adding task');
                 }
-                res.redirect('/viewtasks'); // Redirect to the view tasks page or another appropriate page
+                res.redirect('/viewtasks.ejs'); // Redirect to the view tasks page or another appropriate page
             });
         });
     });
@@ -164,7 +164,7 @@ module.exports = function(app, taskData) {
           }
       
           // Redirect back to the tasks page or handle as needed
-          res.redirect('/viewtasks');
+          res.redirect('/viewtasks.ejs');
         });
       });
 
@@ -180,7 +180,7 @@ module.exports = function(app, taskData) {
                 console.error("Error occurred while deleting the task:", error);
                 res.status(500).send("An error occurred while deleting the task.");
             } else {
-                res.redirect('/viewtasks')
+                res.redirect('/viewtasks.ejs')
             }
 
         })
