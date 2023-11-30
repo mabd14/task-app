@@ -50,7 +50,7 @@ module.exports = function(app, taskData) {
                         return console.error(err.message);
                     }
                     else {
-                        res.redirect('/')
+                        res.redirect('./')
                     
     
                     
@@ -192,9 +192,9 @@ module.exports = function(app, taskData) {
     app.get('/logout', redirectLogin, (req,res) => {
         req.session.destroy(err => {
         if (err) {
-          return res.redirect('/')
+          return res.redirect('./')
         }
-        res.redirect('/')
+        res.redirect('./')
         })
     })
 
