@@ -94,7 +94,7 @@ module.exports = function(app, taskData) {
                     req.session.userId = req.body.username;
                     req.session.userDbId = result[0].user_id;
                     console.log('user_id: ' + req.session.userDbId)
-                    res.redirect('/');
+                    res.redirect('/viewtasks');
                 } else {
                     res.status(401).send("Incorrect Password!");
                 }
