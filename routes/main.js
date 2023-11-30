@@ -94,7 +94,7 @@ module.exports = function(app, taskData) {
                     req.session.userId = req.body.username;
                     req.session.userDbId = result[0].user_id;
                     console.log('user_id: ' + req.session.userDbId)
-                    res.redirect('/viewtasks');
+                    res.redirect('./viewtasks');
                 } else {
                     res.status(401).send("Incorrect Password!");
                 }
@@ -142,7 +142,7 @@ module.exports = function(app, taskData) {
                     console.error('Error adding task:', err);
                     return res.status(500).send('Error adding task');
                 }
-                res.redirect('/viewtasks.ejs'); // Redirect to the view tasks page or another appropriate page
+                res.redirect('./viewtasks'); // Redirect to the view tasks page or another appropriate page
             });
         });
     });
@@ -164,7 +164,7 @@ module.exports = function(app, taskData) {
           }
       
           // Redirect back to the tasks page or handle as needed
-          res.redirect('/viewtasks.ejs');
+          res.redirect('./viewtasks');
         });
       });
 
@@ -180,7 +180,7 @@ module.exports = function(app, taskData) {
                 console.error("Error occurred while deleting the task:", error);
                 res.status(500).send("An error occurred while deleting the task.");
             } else {
-                res.redirect('/viewtasks.ejs')
+                res.redirect('./viewtasks')
             }
 
         })
