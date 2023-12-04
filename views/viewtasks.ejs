@@ -10,8 +10,13 @@
       }
 
       function toggleCompletedTasks() {
-        var completedTasksSection = document.getElementById('completedTasks');
+        let completedTasksSection = document.getElementById('completedTasks');
         completedTasksSection.style.display = completedTasksSection.style.display === 'none' ? 'block' : 'none';
+      }
+
+      function togglePendingTasks() {
+        let pendingTasksSection = document.getElementById('pendingTasks');
+        pendingTasksSection.style.display = pendingTasksSection.style.display === 'none' ? 'block' : 'none';
       }
     </script>
   </head>
@@ -22,11 +27,14 @@
           <li><a href="/">Home</a></li>
           <li><a href="addtasks">Add Tasks</a></li>
           <li><a href="viewtasks">View Tasks</a></li>
+          <li><a href="focus">Focus</a></li>
           <li><a href="logout">Logout</a></li>
         </ul>
       </nav>
     </header>
     <h1>Tasks</h1>
+
+
     <button class="button" onclick="toggleCompletedTasks()">Toggle Completed Tasks</button>
     <ul id="completedTasks" style="display: none;">
       <% tasks.forEach(function(task) { %>
@@ -49,9 +57,12 @@
         <% } %>
       <% }) %>
     </ul>
-    <ul>
+
+
+    <button class="button" onclick="togglePendingTasks()">Toggle Pending Tasks</button>
+    <ul id="pendingTasks" style="display: none;">
       <% tasks.forEach(function(task) { %>
-        <% if (task.status !== 'completed') { %>
+        <% if (task.status === 'pending') { %>
           <li class="task-item">
             <div class="task-details">
               <strong>Task Name:</strong> <%= task.task_name %><br>
@@ -61,15 +72,6 @@
               <strong>Priority:</strong> <%= task.priority %><br>
             </div>
             <div class="task-actions">
-              <form action="/updateTaskStatus" method="post" class="status-form">
-                <input type="hidden" name="taskId" value="<%= task.task_id %>">
-                <select name="newStatus">
-                  <option value="pending" <% if (task.status === 'pending') { %>selected<% } %>>Pending</option>
-                  <option value="completed" <% if (task.status === 'completed') { %>selected<% } %>>Completed</option>
-                  <option value="overdue" <% if (task.status === 'overdue') { %>selected<% } %>>Overdue</option>
-                </select>
-                <button type="submit">Update Status</button>
-              </form>
               <form action="/deleteTask" method="post">
                 <input type="hidden" name="taskId" value="<%= task.task_id %>">
                 <button type="submit">Delete Task</button>
@@ -81,3 +83,4 @@
     </ul>
   </body>
 </html>
+

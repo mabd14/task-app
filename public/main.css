@@ -83,14 +83,14 @@ input[type=submit]:hover {
 
 .task-item {
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(123,216,189); /* Subtle shadow for depth */
+    box-shadow: 0 2px 5px rgba(123,216,189); 
     padding: 15px;
     margin-bottom: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .task-item:hover {
-    transform: translateY(-3px); /* Slight lift on hover */
+    transform: translateY(-3px); 
 }
 
 .task-details, .status-update-form {
@@ -98,7 +98,7 @@ input[type=submit]:hover {
 }
   
 .button {
-    background-color: #4CAF50; /* Green background */
+    background-color: #4CAF50; 
     border: none;
     color: white;
     padding: 10px 20px;
@@ -109,15 +109,15 @@ input[type=submit]:hover {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effect */
+    transition: background-color 0.3s, transform 0.2s; 
 }
 
 .button:hover {
-    background-color: #45a049; /* Darker shade of green */
-    transform: scale(1.05); /* Slight increase in size */
+    background-color: #45a049; 
+    transform: scale(1.05); 
 }
 
-  
+      
 
 @media screen and (max-width: 600px) {
     .menu {
@@ -130,16 +130,20 @@ input[type=submit]:hover {
     }
 }
 
-#progressBarContainer {
-    width: 100%;
-    background-color: #ddd;
-  }
-  
-  #progressBar {
-    height: 30px;
-    background-color: #4CAF50;
+.pomo-container {
     text-align: center;
-    line-height: 30px;
-    color: white;
-  }
-  
+    margin-top: 50px;
+}
+
+#timerDisplay {
+    font-size: 2em;
+    margin: 20px 0;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+

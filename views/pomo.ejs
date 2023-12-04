@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Mode</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+    <header>
+        <nav class="menu">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="addtasks">Add Tasks</a></li>
+            <li><a href="viewtasks">View Tasks</a></li>
+            <li><a href="focus">Focus</a></li>
+            <li><a href="logout">Logout</a></li>
+          </ul>
+        </nav>
+      </header>
+    <div class="pomo-container">
+        <h1>Pomodoro Timer</h1>
+        <div id="timerDisplay">25:00</div>
+        <button id="startStopBtn">Start</button>
+        <button id="resetBtn">Reset</button>
+        <p>Sessions Completed: <span id="sessionCount">0</span></p>
+    </div>
+    <script>
+        let isRunning = false;
+        let sessionCount = 0;
+        let sessionTime = 25 * 60; // 25 minutes
+        let breakTime = 5 * 60; // 5 minutes
+        let longBreakTime = 15 * 60; // 15 minutes
+        let currentTime = sessionTime;
+        let timer;
+    
+        const display = document.getElementById('timerDisplay');
+        const startStopBtn = document.getElementById('startStopBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const sessionCountDisplay = document.getElementById('sessionCount');
+    
+        function updateDisplay(time) {
+            let minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                startStopBtn.textContent = 'Start';
+            } else {
+                timer = setInterval(function() {
+                    currentTime--;
+                    updateDisplay(currentTime);
+    
+                    if (currentTime <= 0) {
+                        clearInterval(timer);
+                        sessionCount++;
+                        sessionCountDisplay.textContent = sessionCount;
+                        
+                        if (sessionCount % 4 === 0) {
+                            currentTime = longBreakTime;
+                        } else {
+                            currentTime = sessionCount % 2 === 0 ? breakTime : sessionTime;
+                        }
+    
+                        updateDisplay(currentTime);
+                    }
+                }, 1000);
+                startStopBtn.textContent = 'Pause';
+            }
+            isRunning = !isRunning;
+        }
+    
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            sessionCount = 0;
+            currentTime = sessionTime;
+            updateDisplay(currentTime);
+            sessionCountDisplay.textContent = sessionCount;
+            startStopBtn.textContent = 'Start';
+        }
+    
+        startStopBtn.addEventListener('click', toggleTimer);
+        resetBtn.addEventListener('click', resetTimer);
+    
+        updateDisplay(currentTime);
+    </script>
+        
+</body>
+</html>

@@ -185,6 +185,10 @@ module.exports = function(app, taskData) {
 
         })
       })
+
+      app.get('/focus',redirectLogin,(req,res) => {
+        res.render('pomo.ejs')
+      })
       
     
     
