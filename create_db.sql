@@ -32,6 +32,9 @@ ALTER TABLE tasks
 ADD COLUMN user_id INT NOT NULL,
 ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
 
+ALTER TABLE courses
+ADD COLUMN user_id INT NOT NULL,
+ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 
 DELIMITER $$

@@ -2,14 +2,19 @@
 <html>
   <head>
     <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
-    <title>Add Task></title>
+    <title>Add Task</title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <script>
-      function toggleCourseInput() {
-        var courseSelect = document.getElementById('courseSelect');
-        var newCourseInput = document.getElementById('newCourse');
-        newCourseInput.style.display = courseSelect.value === 'newCourse' ? 'block' : 'none';
+      function showCourseSelection() {
+        document.getElementById('existingCourseSelect').style.display = 'block';
+        document.getElementById('newCourseInput').style.display = 'none';
       }
+
+      function showNewCourseInput() {
+        document.getElementById('existingCourseSelect').style.display = 'none';
+        document.getElementById('newCourseInput').style.display = 'block';
+      }
+    
     </script>
   </head>
   <body>
@@ -25,19 +30,26 @@
     <h1>Add Task</h1>
     <form method="POST" action="/addedtask">
         <p>Task Name: <input id="taskName" type="text" name="taskName"/></p>
-        <p>Course: 
-          <select id="courseSelect" name="courseSelect" onchange="toggleCourseInput()">
+        <p>
+          <button type="button" onclick="showCourseSelection()">Select Existing Course</button>
+          <button type="button" onclick="showNewCourseInput()">Add New Course</button>
+        </p>
+
+        <div id="existingCourseSelect" style="display: none;">
+          Course: 
+          <select id="courseSelect" name="courseSelect">
               <% if (courses.length > 0) { %>
                   <% courses.forEach(function(course) { %>
                       <option value="<%= course.course_name %>"><%= course.course_name %></option>
                   <% }); %>
               <% } %>
-              <option value="newCourse">Add New Course...</option>
           </select>
-        </p>
-        <p id="newCourse" style="display:none;">New Course: <input type="text" name="newCourseName"/></p>
-        
-        <p id="newCourse" style="display:none;">New Course: <input type="text" name="newCourseName"/></p>
+        </div>
+
+        <div id="newCourseInput" style="display: none;">
+          New Course: <input type="text" name="newCourseName"/>
+        </div>
+      
         <p>Due Date: <input id="dueDate" type="date" name="dueDate"/></p>
         <p>Duration (minutes): <input id="duration" type="number" name="durationMinutes" min="0"/></p>
         <p>Priority: 

@@ -117,20 +117,25 @@ module.exports = function (app, taskData) {
   });
 
   app.get("/addtasks", redirectLogin, function (req, res) {
-    const getCoursesQuery = "SELECT course_name FROM courses";
-    db.query(getCoursesQuery, (err, results) => {
+    const userDbId = req.session.userDbId;
+    console.log("User ID:", userDbId);
+
+    const getCoursesQuery = "SELECT course_name FROM courses WHERE user_id = ?";
+
+    db.query(getCoursesQuery, [userDbId], (err, results) => {
         if (err) {
-            console.error("Error fetching courses:", err);
+            console.error("Error fetching courses for user:", err);
             return res.status(500).send("Error fetching courses");
         }
-            res.render("addtasks.ejs", {courses: results });
+        res.render("addtasks.ejs", {courses: results });
     });
 });
 
 
+
 app.post("/addedtask", function (req, res) {
   const courseSelect = req.body.courseSelect;
-  const newCourseName = req.body.newCourseName[0];
+  const newCourseName = req.body.newCourseName;
 
   // Function to insert the task
   function insertTask(courseId) {
@@ -144,22 +149,20 @@ app.post("/addedtask", function (req, res) {
       });
   }
 
-  if (courseSelect === 'newCourse' && newCourseName) {
-      // Insert the new course first, then the task
-      const insertCourseQuery = "INSERT INTO courses (course_name) VALUES (?)";
-      console.log('newCourseName:', newCourseName, 'Type:', typeof newCourseName);
-      db.query(insertCourseQuery, [newCourseName], (err, courseResult) => {
-          if (err) {
+  if (newCourseName) {
+      // If newCourseName is provided, insert the new course first, then the task
+      const insertCourseQuery = "INSERT INTO courses (course_name, user_id) VALUES (?, ?)";
+      db.query(insertCourseQuery, [newCourseName, req.session.userDbId], (err, courseResult) => {
+          if (err) { 
               console.error("Error adding course:", err);
               return res.status(500).send("Error adding course");
           }
           insertTask(courseResult.insertId); // Insert the task with the new course ID
       });
   } else {
-      // Existing course is selected, so use its course ID
-      // fetch the course ID based on courseSelect (which should be the course name)
-      const getCourseIdQuery = "SELECT course_id FROM courses WHERE course_name = ?";
-      db.query(getCourseIdQuery, [courseSelect], (err, result) => {
+      // Existing course is selected, so fetch its course ID
+      const getCourseIdQuery = "SELECT course_id FROM courses WHERE course_name = ? AND user_id = ?";
+      db.query(getCourseIdQuery, [courseSelect, req.session.userId], (err, result) => {
           if (err || result.length === 0) {
               console.error("Error fetching course ID:", err);
               return res.status(500).send("Error fetching course ID");
@@ -168,6 +171,8 @@ app.post("/addedtask", function (req, res) {
       });
   }
 });
+
+
 
 
   app.post("/updateTaskStatus", function (req, res) {

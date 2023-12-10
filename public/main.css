@@ -68,7 +68,6 @@ input {
     border: 1px solid #000; /* Solid black border for 8-bit style */
     box-sizing: border-box;
     font-family: 'PixelatedFont', sans-serif; /* Pixelated font */
-    color: white; /* White text */
     box-shadow: inset -4px -4px 0px 0px #4AA52E; /* Pixel shadow effect */
 }
 
