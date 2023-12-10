@@ -1,24 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Your Tasks</title>
+    <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/main.css" />
+
     <script>
       function formatDate(dateString) {
-        const options = {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'};
+        const options = {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        };
         return new Date(dateString).toLocaleDateString("en-US", options);
       }
-
-      function toggleCompletedTasks() {
-        let completedTasksSection = document.getElementById('completedTasks');
-        completedTasksSection.style.display = completedTasksSection.style.display === 'none' ? 'block' : 'none';
-      }
-
-      function togglePendingTasks() {
-        let pendingTasksSection = document.getElementById('pendingTasks');
-        pendingTasksSection.style.display = pendingTasksSection.style.display === 'none' ? 'block' : 'none';
-      }
+    
+      const insertAboveTask = (zone, mouseY) => {
+        const tasks = zone.querySelectorAll(".task-item:not(.is-dragging)");
+        let closestTask = null;
+        let closestDistance = Number.POSITIVE_INFINITY;
+    
+        tasks.forEach((task) => {
+          const box = task.getBoundingClientRect();
+          const offset = mouseY - box.top - box.height / 2;
+    
+          if (offset < 0 && offset > closestDistance) {
+            closestDistance = offset;
+            closestTask = task;
+          }
+        });
+        return closestTask;
+      };
+    
+      document.addEventListener('DOMContentLoaded', function() {
+        const taskItems = document.querySelectorAll('.task-item');
+        const droppables = document.querySelectorAll('.swim-lane');
+        
+        taskItems.forEach(item => {
+          item.addEventListener('dragstart', () => {
+            item.classList.add('is-dragging');
+          });
+    
+          item.addEventListener('dragend', () => {
+            item.classList.remove('is-dragging');
+          });
+        });
+    
+        droppables.forEach((zone) => {
+          zone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            const bottomTask = insertAboveTask(zone, e.clientY);
+            const curTask = document.querySelector(".is-dragging");
+    
+            if (!bottomTask) {
+              zone.appendChild(curTask);
+            } else {
+              zone.insertBefore(curTask, bottomTask);
+            }
+          });
+        });
+      });
     </script>
+    
   </head>
   <body>
     <header>
@@ -32,55 +76,104 @@
         </ul>
       </nav>
     </header>
+
     <h1>Tasks</h1>
-
-
-    <button class="button" onclick="toggleCompletedTasks()">Toggle Completed Tasks</button>
-    <ul id="completedTasks" style="display: none;">
-      <% tasks.forEach(function(task) { %>
-        <% if (task.status === 'completed') { %>
-          <li class="task-item">
+    <div class="columns">
+      <div class="swim-lane" id="pending-column">
+        <h3>Pending Tasks</h3>
+        <ul id="pendingTasks">
+          <% tasks.forEach(function(task) { %> <% if (task.status === 'pending')
+          { %>
+          <li class="task-item" draggable="true">
             <div class="task-details">
-              <strong>Task Name:</strong> <%= task.task_name %><br>
-              <strong>Course:</strong> <%= task.course_name %><br>
-              <strong>Due Date:</strong> <script>document.write(formatDate("<%= task.due_date %>"));</script><br>
-              <strong>Duration:</strong> <%= task.duration %> minutes<br>           
-              <strong>Priority:</strong> <%= task.priority %><br>
+              <strong >Task Name:</strong> <%= task.task_name %><br />
+              <strong>Course:</strong> <%= task.course_name %><br />
+              <strong>Due Date:</strong>
+              <script>
+                document.write(formatDate("<%= task.due_date %>"));
+              </script>
+              <br />
+              <strong>Duration:</strong> <%= task.duration %> minutes<br />
+              <strong>Priority:</strong> <%= task.priority %><br />
             </div>
             <div class="task-actions">
               <form action="/deleteTask" method="post">
-                <input type="hidden" name="taskId" value="<%= task.task_id %>">
+                <input
+                  type="hidden"
+                  name="taskId"
+                  value="<%= task.task_id %>"
+                />
                 <button type="submit">Delete Task</button>
               </form>
             </div>
           </li>
-        <% } %>
-      <% }) %>
-    </ul>
+          <% } %> <% }) %>
+        </ul>
+      </div>
 
-
-    <button class="button" onclick="togglePendingTasks()">Toggle Pending Tasks</button>
-    <ul id="pendingTasks" style="display: none;">
-      <% tasks.forEach(function(task) { %>
-        <% if (task.status === 'pending') { %>
-          <li class="task-item">
+      <div class="swim-lane" id="completed-column">
+        <h3>Completed Tasks</h3>
+        <ul id="completedTasks">
+          <% tasks.forEach(function(task) { %> <% if (task.status ===
+          'completed') { %>
+          <li class="task-item" draggable="true">
             <div class="task-details">
-              <strong>Task Name:</strong> <%= task.task_name %><br>
-              <strong>Course:</strong> <%= task.course_name %><br>
-              <strong>Due Date:</strong> <script>document.write(formatDate("<%= task.due_date %>"));</script><br>
-              <strong>Duration:</strong> <%= task.duration %> minutes<br>           
-              <strong>Priority:</strong> <%= task.priority %><br>
+              <strong>Task Name:</strong> <%= task.task_name %><br />
+              <strong>Course:</strong> <%= task.course_name %><br />
+              <strong>Due Date:</strong>
+              <script>
+                document.write(formatDate("<%= task.due_date %>"));
+              </script>
+              <br />
+              <strong>Duration:</strong> <%= task.duration %> minutes<br />
+              <strong>Priority:</strong> <%= task.priority %><br />
             </div>
             <div class="task-actions">
               <form action="/deleteTask" method="post">
-                <input type="hidden" name="taskId" value="<%= task.task_id %>">
+                <input
+                  type="hidden"
+                  name="taskId"
+                  value="<%= task.task_id %>"
+                />
                 <button type="submit">Delete Task</button>
               </form>
             </div>
           </li>
-        <% } %>
-      <% }) %>
-    </ul>
+          <% } %> <% }) %>
+        </ul>
+      </div>
+
+      <div class="swim-lane" id="overdue-column">
+        <h3>Overdue Tasks</h3>
+        <ul id="overdueTasks">
+          <% tasks.forEach(function(task) { %> <% if (task.status === 'overdue')
+          { %>
+          <li class="task-item" draggable="true">
+            <div class="task-details">
+              <strong>Task Name:</strong> <%= task.task_name %><br />
+              <strong>Course:</strong> <%= task.course_name %><br />
+              <strong>Due Date:</strong>
+              <script>
+                document.write(formatDate("<%= task.due_date %>"));
+              </script>
+              <br />
+              <strong>Duration:</strong> <%= task.duration %> minutes<br />
+              <strong>Priority:</strong> <%= task.priority %><br />
+            </div>
+            <div class="task-actions">
+              <form action="/deleteTask" method="post">
+                <input
+                  type="hidden"
+                  name="taskId"
+                  value="<%= task.task_id %>"
+                />
+                <button type="submit">Delete Task</button>
+              </form>
+            </div>
+          </li>
+          <% } %> <% }) %>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
-

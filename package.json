@@ -8,6 +8,7 @@
     "mysql": "^2.18.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "request": "^2.88.2",
     "validator": "^13.11.0"
   }
 }

@@ -1,3 +1,7 @@
+*::-webkit-scrollbar {
+    display: none;
+  }
+
 a:visited, a:link, a:active {
     text-decoration: none;
     color: rgb(206,214,243);
@@ -8,7 +12,7 @@ a:hover {
 body {
     background-color: rgb(14,25,45);
     color: rgb(206,214,243);
-    font-family: 'NTR', sans-serif;
+    font-family: 'Public Pixel', sans-serif;
 }
 
 .menu {
@@ -61,61 +65,87 @@ input {
     padding: 8px;
     margin: 6px 0;
     display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #000; /* Solid black border for 8-bit style */
     box-sizing: border-box;
+    font-family: 'PixelatedFont', sans-serif; /* Pixelated font */
+    color: white; /* White text */
+    box-shadow: inset -4px -4px 0px 0px #4AA52E; /* Pixel shadow effect */
 }
 
 input[type=submit] {
     width: 100%;
-    background-color: rgb(94, 145, 130);
-    color: white;
+    background-color: #92CD41; /* Green background */
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
+    font-family: 'PixelatedFont', sans-serif; /* Pixelated font */
+    box-shadow: inset -4px -4px 0px 0px #4AA52E; /* Pixel shadow effect */
 }
 
 input[type=submit]:hover {
-    background-color: rgb(123,216,189);
+    background-color: #76c442; /* Slightly different green on hover */
+    box-shadow: inset -6px -6px 0px 0px #4AA52E; /* Increased shadow on hover */
+}
+
+button {
+    width: 100%;
+    background-color: #92CD41; /* Green background */
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    font-family: 'PixelatedFont', sans-serif; /* Pixelated font */
+    box-shadow: inset -4px -4px 0px 0px #4AA52E; /* Pixel shadow effect */
+}
+
+button:hover {
+    background-color: #76c442; /* Slightly different green on hover */
+    box-shadow: inset -6px -6px 0px 0px #4AA52E; /* Increased shadow on hover */
+}
+
+
+.is-dragging {
+    box-shadow: 0px 5px 15px rgba(0, 200, 200, 0.25);
+}
+
+
+
+.columns {
+    display: flex;
+    align-items: flex-start;
+    justify-content: start;
+    gap: 16px;
+    padding: 24px 32px;
+    overflow: scroll;
+}
+.swim-lane {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; 
+    gap: 8px; 
+    padding: 12px; /* Padding inside swim-lane */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    width: 25%; 
+    min-height: 120px;
 }
 
 .task-item {
+    box-sizing: border-box; 
+    width: 100%; 
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(123,216,189); 
     padding: 15px;
-    margin-bottom: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    margin-bottom: 15px; 
+    cursor: move;
 }
+
 
 .task-item:hover {
     transform: translateY(-3px); 
 }
-
-.task-details, .status-update-form {
-    margin: 10px;
-}
   
-.button {
-    background-color: #4CAF50; 
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s; 
-}
-
-.button:hover {
-    background-color: #45a049; 
-    transform: scale(1.05); 
-}
 
       
 
@@ -125,9 +155,6 @@ input[type=submit]:hover {
         align-items: flex-end;
     }
 
-    .task-item {
-        flex-direction: column;
-    }
 }
 
 .pomo-container {
@@ -140,10 +167,7 @@ input[type=submit]:hover {
     margin: 20px 0;
 }
 
-button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 1em;
-}
+
+
 
 

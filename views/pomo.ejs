@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Mode</title>
+    <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" href="/main.css" />
 </head>
 <body>
@@ -89,5 +88,37 @@
         updateDisplay(currentTime);
     </script>
         
+
+    <script>
+        function fetchWeather() {
+            let city = 'london';
+            let apiKey = '2315392e1494807887d2743404f0616f';
+            let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+    
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    displayWeather(data);
+                })
+                .catch(err => {
+                    console.error('Error fetching weather:', err);
+                });
+        }
+    
+        function displayWeather(data) {
+            const weatherContainer = document.createElement('div');
+            weatherContainer.innerHTML = `
+                <h2>Weather in ${data.name}</h2>
+                <p>Temperature: ${data.main.temp} °C</p>
+                <p>Weather: ${data.weather[0].main}</p>
+            `;
+            document.body.appendChild(weatherContainer);
+        }
+    
+        fetchWeather();
+    </script>
+
+    <div class="weather-container"></div>
+
 </body>
 </html>
