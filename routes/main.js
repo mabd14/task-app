@@ -162,13 +162,17 @@ app.post("/addedtask", function (req, res) {
   } else {
       // Existing course is selected, so fetch its course ID
       const getCourseIdQuery = "SELECT course_id FROM courses WHERE course_name = ? AND user_id = ?";
-      db.query(getCourseIdQuery, [courseSelect, req.session.userId], (err, result) => {
-          if (err || result.length === 0) {
+      db.query(getCourseIdQuery, [courseSelect, req.session.userDbId], (err, result) => {
+          if (err) {
               console.error("Error fetching course ID:", err);
               return res.status(500).send("Error fetching course ID");
           }
+          if (result.length === 0) {
+              return res.status(404).send("Course not found");
+          }
           insertTask(result[0].course_id); // Insert the task with the existing course ID
       });
+      
   }
 });
 

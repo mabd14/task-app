@@ -4,65 +4,7 @@
     <title>Your Tasks</title>
     <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/main.css" />
-
-    <script>
-      function formatDate(dateString) {
-        const options = {
-          weekday: "short",
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        };
-        return new Date(dateString).toLocaleDateString("en-US", options);
-      }
-    
-      const insertAboveTask = (zone, mouseY) => {
-        const tasks = zone.querySelectorAll(".task-item:not(.is-dragging)");
-        let closestTask = null;
-        let closestDistance = Number.POSITIVE_INFINITY;
-    
-        tasks.forEach((task) => {
-          const box = task.getBoundingClientRect();
-          const offset = mouseY - box.top - box.height / 2;
-    
-          if (offset < 0 && offset > closestDistance) {
-            closestDistance = offset;
-            closestTask = task;
-          }
-        });
-        return closestTask;
-      };
-    
-      document.addEventListener('DOMContentLoaded', function() {
-        const taskItems = document.querySelectorAll('.task-item');
-        const droppables = document.querySelectorAll('.swim-lane');
-        
-        taskItems.forEach(item => {
-          item.addEventListener('dragstart', () => {
-            item.classList.add('is-dragging');
-          });
-    
-          item.addEventListener('dragend', () => {
-            item.classList.remove('is-dragging');
-          });
-        });
-    
-        droppables.forEach((zone) => {
-          zone.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            const bottomTask = insertAboveTask(zone, e.clientY);
-            const curTask = document.querySelector(".is-dragging");
-    
-            if (!bottomTask) {
-              zone.appendChild(curTask);
-            } else {
-              zone.insertBefore(curTask, bottomTask);
-            }
-          });
-        });
-      });
-    </script>
-    
+    <script src="/script.js"></script>
   </head>
   <body>
     <header>
@@ -89,10 +31,7 @@
               <strong >Task Name:</strong> <%= task.task_name %><br />
               <strong>Course:</strong> <%= task.course_name %><br />
               <strong>Due Date:</strong>
-              <script>
-                document.write(formatDate("<%= task.due_date %>"));
-              </script>
-              <br />
+              <div class="due-date"><%= task.due_date %></div>
               <strong>Duration:</strong> <%= task.duration %> minutes<br />
               <strong>Priority:</strong> <%= task.priority %><br />
             </div>
@@ -121,9 +60,7 @@
               <strong>Task Name:</strong> <%= task.task_name %><br />
               <strong>Course:</strong> <%= task.course_name %><br />
               <strong>Due Date:</strong>
-              <script>
-                document.write(formatDate("<%= task.due_date %>"));
-              </script>
+              <div class="due-date"><%= task.due_date %></div>
               <br />
               <strong>Duration:</strong> <%= task.duration %> minutes<br />
               <strong>Priority:</strong> <%= task.priority %><br />
@@ -153,9 +90,7 @@
               <strong>Task Name:</strong> <%= task.task_name %><br />
               <strong>Course:</strong> <%= task.course_name %><br />
               <strong>Due Date:</strong>
-              <script>
-                document.write(formatDate("<%= task.due_date %>"));
-              </script>
+              <div class="due-date"><%= task.due_date %></div>
               <br />
               <strong>Duration:</strong> <%= task.duration %> minutes<br />
               <strong>Priority:</strong> <%= task.priority %><br />

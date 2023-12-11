@@ -170,3 +170,12 @@ button:hover {
 
 
 
+
+input[type=date] {
+    color: #CEDEE3; /* Text color */
+    font-family: 'Public Pixel', sans-serif; /* Your custom font */
+    border-radius: 4px; /* Rounded borders */
+    padding: 8px; /* Padding inside the input */
+    border: 1px solid #000; /* Solid border */
+    box-shadow: inset -4px -4px 0px 0px #4AA52E; /* Shadow effect */
+}
