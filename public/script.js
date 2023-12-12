@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       fetchStoicQuote();
   }
 
+
   if (document.querySelector(".weather-container")) {
       fetchWeather();
   }
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     el.textContent = formatDate(el.textContent);
 });
 
-  setupTaskDragAndDrop();
+  filterTasks('all'); // Show all tasks initially
 });
 
 function setupPomodoroTimer() {
@@ -144,55 +145,6 @@ function showNewCourseInput() {
   document.getElementById('newCourseInput').style.display = 'block';
 }
 
-function setupTaskDragAndDrop() {
-  const taskItems = document.querySelectorAll('.task-item');
-  const droppables = document.querySelectorAll('.swim-lane');
-
-  taskItems.forEach(item => {
-      item.addEventListener('dragstart', () => {
-          item.classList.add('is-dragging');
-      });
-
-      item.addEventListener('dragend', () => {
-          item.classList.remove('is-dragging');
-      });
-  });
-
-  droppables.forEach((zone) => {
-      zone.addEventListener("dragover", (e) => {
-          e.preventDefault();
-          const bottomTask = insertAboveTask(zone, e.clientY);
-          const curTask = document.querySelector(".is-dragging");
-
-          if (!bottomTask) {
-              zone.appendChild(curTask);
-          } else {
-              zone.insertBefore(curTask, bottomTask);
-          }
-      });
-  });
-}
-
-const insertAboveTask = (zone, mouseY) => {
-  const tasks = zone.querySelectorAll(".task-item:not(.is-dragging)");
-  let closestTask = null;
-  let closestDistance = Number.POSITIVE_INFINITY;
-
-  tasks.forEach((task) => {
-    const box = task.getBoundingClientRect();
-    const offset = mouseY - box.top - box.height / 2;
-
-    if (offset < 0 && offset > closestDistance) {
-      closestDistance = offset;
-      closestTask = task;
-    }
-  });
-  return closestTask;
-};
-
-
-
-
 
 function formatDate(dateString) {
   const options = {
@@ -203,3 +155,13 @@ function formatDate(dateString) {
   };
   return new Date(dateString).toLocaleDateString("en-US", options);
 }
+function filterTasks(status) {
+    const tasks = document.querySelectorAll('.task-item');
+    tasks.forEach(task => {
+        if (status === 'all' || task.getAttribute('data-status') === status) {
+            task.style.display = '';
+        } else {
+            task.style.display = 'none';
+        }
+    });
+  }

@@ -118,7 +118,6 @@ module.exports = function (app, taskData) {
 
   app.get("/addtasks", redirectLogin, function (req, res) {
     const userDbId = req.session.userDbId;
-    console.log("User ID:", userDbId);
 
     const getCoursesQuery = "SELECT course_name FROM courses WHERE user_id = ?";
 
@@ -179,27 +178,23 @@ app.post("/addedtask", function (req, res) {
 
 
 
-  app.post("/updateTaskStatus", function (req, res) {
-    const taskId = req.body.taskId;
-    const newStatus = req.body.newStatus;
+app.post('/updateTaskStatus', function (req, res) {
+  const { taskId, newStatus } = req.body;
 
-    // SQL query to update the status
-    const sql = `UPDATE tasks SET status = ? WHERE task_id = ?`;
-
-    // Execute the query
-    // (Assuming 'db' is your database connection variable)
-    db.query(sql, [newStatus, taskId], function (err, result) {
-      console.log(taskId)
+  const sql = 'UPDATE tasks SET status = ? WHERE task_id = ?';
+  db.query(sql, [newStatus, taskId], function (err, result) {
       if (err) {
-        // Handle the error
-        console.error(err);
-        return res.send("Error updating status");
+          console.error(err);
+          console.error("An error occured when changing the status of the task")
       }
-
-      // Redirect back to the tasks page or handle as needed
+      if (result.affectedRows === 0) {
+          console.error(err);
+      }
       res.redirect("./viewtasks");
-    });
   });
+});
+
+
 
   app.post("/deleteTask", function (req, res) {
     const taskId = req.body.taskId;
@@ -230,6 +225,54 @@ app.post("/addedtask", function (req, res) {
       res.redirect("./");
     });
   });
+
+  app.get("/notes", function(req, res) {
+    const userId = req.session.userDbId;
+
+    // Modified query to join q_notes with courses
+    const query = `
+        SELECT c_notes.note_id, c_notes.note_content, courses.course_name 
+        FROM c_notes 
+        INNER JOIN courses ON c_notes.course_id = courses.course_id 
+        WHERE c_notes.user_id = ?
+    `;
+
+    db.query(query, [userId], function(err, notesResults) {
+        if (err) {
+            console.error("Error fetching notes: ", err);
+            return res.status(500).send("Error fetching notes");
+        }
+        // Also fetch courses to populate the dropdown
+        db.query("SELECT * FROM courses WHERE user_id = ?", [userId], function(err, courseResults) {
+            if (err) {
+                console.error("Error fetching courses: ", err);
+                return res.status(500).send("Error fetching courses");
+            }
+            res.render("notes.ejs", { notes: notesResults, courses: courseResults });
+        });
+    });
+});
+
+
+
+
+app.post("/notes", function(req, res) {
+  const noteContent = req.body.noteContent;
+  const userId = req.session.userDbId;
+  const courseId = req.body.courseId; // Retrieve courseId from the form submission
+
+  const query = "INSERT INTO c_notes (note_content, user_id, course_id) VALUES (?, ?, ?)";
+  db.query(query, [noteContent, userId, courseId], function(err, results) {
+      if (err) {
+          console.error("Error adding note: ", err);
+          return res.status(500).send("Error adding note");
+      }
+      res.redirect("/notes");
+  });
+});
+
+
+
 
   app.get("/api", function (req, res) {
     let sqlquery = "select * from tasks";

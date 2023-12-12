@@ -1,5 +1,7 @@
 CREATE DATABASE ScholarFlow;
 USE ScholarFlow;
+
+-- Users Table
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50),
@@ -9,33 +11,36 @@ CREATE TABLE users (
     u_password VARCHAR(255)
 );
 
+-- Courses Table
 CREATE TABLE courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
-    course_name VARCHAR(255)
+    course_name VARCHAR(255),
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+-- Tasks Table
 CREATE TABLE tasks (
     task_id INT AUTO_INCREMENT PRIMARY KEY,
     task_name VARCHAR(255),
     due_date DATETIME,
-    duration INT,  -- Changed to INT to store duration in minutes
+    duration INT,  -- Duration in minutes
     priority ENUM('low', 'medium', 'high'),
-    status ENUM('pending', 'completed', 'overdue') DEFAULT 'pending'
+    status ENUM('pending', 'completed', 'overdue') DEFAULT 'pending',
+    course_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-
-ALTER TABLE tasks
-ADD COLUMN course_id INT NOT NULL,
-ADD FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE;
-
-ALTER TABLE tasks
-ADD COLUMN user_id INT NOT NULL,
-ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
-
-ALTER TABLE courses
-ADD COLUMN user_id INT NOT NULL,
-ADD FOREIGN KEY (user_id) REFERENCES users(user_id);
-
+CREATE TABLE c_notes (
+    note_id INT AUTO_INCREMENT PRIMARY KEY,
+    note_content TEXT,  -- Allowing for very long notes
+    course_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
 DELIMITER $$
 
@@ -48,10 +53,3 @@ BEGIN
 END $$
 
 DELIMITER ;
-
-
-
--- create stored proc to see what whether it is overdue, pending or complete 
--- create stored proc to show only certain subjects
--- create stored proc to show priority
--- to search for a specific task

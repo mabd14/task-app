@@ -20,8 +20,10 @@
     <form method="POST" action="/addedtask">
         <p>Task Name: <input id="taskName" type="text" name="taskName"/></p>
         <p>
-          <button type="button" onclick="showCourseSelection()">Select Existing Course</button>
-          <button type="button" onclick="showNewCourseInput()">Add New Course</button>
+          <div class="courseButtonContainer">
+          <button type="button" id="courseButton" onclick="showCourseSelection()">Select Existing Course</button>
+          <button type="button" id="courseButton" onclick="showNewCourseInput()">Add New Course</button>
+          </div>
         </p>
 
         <div id="existingCourseSelect" style="display: none;">

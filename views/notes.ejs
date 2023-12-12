@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link rel="stylesheet" href="/main.css" />
+    <script src="/script.js"></script>
+</head>
+<body>
+    <h1>Notes</h1>
+
+    <!-- Form for adding a new note -->
+    <form action="/notes" method="post">
+        <!-- Dropdown for selecting the course -->
+        <label for="courseSelect">Course:</label>
+        <select id="courseSelect" name="courseId" required>
+            <% courses.forEach(course => { %>
+                <option value="<%= course.course_id %>"><%= course.course_name %></option>
+            <% }); %>
+        </select><br>
+
+        <label for="noteContent">New Note:</label>
+        <textarea id="noteContent" name="noteContent" required></textarea><br>
+        <input type="submit" value="Add Note">
+    </form>
+
+    <hr>
+
+    <!-- Section for displaying notes -->
+    <% if (notes.length > 0) { %>
+        <% notes.forEach(note => { %>
+            <div>
+                <h3>Note for <%= note.course_name %>:</h3>
+                <p><%= note.note_content %></p>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No notes available.</p>
+    <% } %>
+</body>
+</html>

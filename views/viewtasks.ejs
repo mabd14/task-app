@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Your Tasks</title>
     <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/main.css" />
-    <script src="/script.js"></script>
-  </head>
-  <body>
+    <script src="/script.js" defer></script>
+</head>
+<body>
     <header>
       <nav class="menu">
         <ul>
@@ -20,95 +20,43 @@
     </header>
 
     <h1>Tasks</h1>
-    <div class="columns">
-      <div class="swim-lane" id="pending-column">
-        <h3>Pending Tasks</h3>
-        <ul id="pendingTasks">
-          <% tasks.forEach(function(task) { %> <% if (task.status === 'pending')
-          { %>
-          <li class="task-item" draggable="true">
-            <div class="task-details">
-              <strong >Task Name:</strong> <%= task.task_name %><br />
-              <strong>Course:</strong> <%= task.course_name %><br />
-              <strong>Due Date:</strong>
-              <div class="due-date"><%= task.due_date %></div>
-              <strong>Duration:</strong> <%= task.duration %> minutes<br />
-              <strong>Priority:</strong> <%= task.priority %><br />
-            </div>
-            <div class="task-actions">
-              <form action="/deleteTask" method="post">
-                <input
-                  type="hidden"
-                  name="taskId"
-                  value="<%= task.task_id %>"
-                />
-                <button type="submit">Delete Task</button>
-              </form>
-            </div>
-          </li>
-          <% } %> <% }) %>
-        </ul>
-      </div>
-
-      <div class="swim-lane" id="completed-column">
-        <h3>Completed Tasks</h3>
-        <ul id="completedTasks">
-          <% tasks.forEach(function(task) { %> <% if (task.status ===
-          'completed') { %>
-          <li class="task-item" draggable="true">
-            <div class="task-details">
-              <strong>Task Name:</strong> <%= task.task_name %><br />
-              <strong>Course:</strong> <%= task.course_name %><br />
-              <strong>Due Date:</strong>
-              <div class="due-date"><%= task.due_date %></div>
-              <br />
-              <strong>Duration:</strong> <%= task.duration %> minutes<br />
-              <strong>Priority:</strong> <%= task.priority %><br />
-            </div>
-            <div class="task-actions">
-              <form action="/deleteTask" method="post">
-                <input
-                  type="hidden"
-                  name="taskId"
-                  value="<%= task.task_id %>"
-                />
-                <button type="submit">Delete Task</button>
-              </form>
-            </div>
-          </li>
-          <% } %> <% }) %>
-        </ul>
-      </div>
-
-      <div class="swim-lane" id="overdue-column">
-        <h3>Overdue Tasks</h3>
-        <ul id="overdueTasks">
-          <% tasks.forEach(function(task) { %> <% if (task.status === 'overdue')
-          { %>
-          <li class="task-item" draggable="true">
-            <div class="task-details">
-              <strong>Task Name:</strong> <%= task.task_name %><br />
-              <strong>Course:</strong> <%= task.course_name %><br />
-              <strong>Due Date:</strong>
-              <div class="due-date"><%= task.due_date %></div>
-              <br />
-              <strong>Duration:</strong> <%= task.duration %> minutes<br />
-              <strong>Priority:</strong> <%= task.priority %><br />
-            </div>
-            <div class="task-actions">
-              <form action="/deleteTask" method="post">
-                <input
-                  type="hidden"
-                  name="taskId"
-                  value="<%= task.task_id %>"
-                />
-                <button type="submit">Delete Task</button>
-              </form>
-            </div>
-          </li>
-          <% } %> <% }) %>
-        </ul>
-      </div>
+    <div>
+        <button onclick="filterTasks('all')">All Tasks</button>
+        <button onclick="filterTasks('pending')">Pending Tasks</button>
+        <button onclick="filterTasks('completed')">Completed Tasks</button>
+        <button onclick="filterTasks('overdue')">Overdue Tasks</button>
     </div>
-  </body>
+    <div class="task-list">
+        <% tasks.forEach(function(task) { %>
+        <div class="task-item" data-status="<%= task.status %>">
+            <div class="task-details">
+                <strong>Task Name:</strong> <%= task.task_name %><br />
+                <strong>Course:</strong> <%= task.course_name %><br />
+                <strong>Due Date:</strong> <%= task.due_date %><br />
+                <strong>Duration:</strong> <%= task.duration %> minutes<br />
+                <strong>Priority:</strong> <%= task.priority %><br />
+                <strong>Status:</strong> <%= task.status %><br />
+            </div>
+            <div class="task-actions">
+                <!-- Delete Task Form -->
+                <form action="/deleteTask" method="post">
+                    <input type="hidden" name="taskId" value="<%= task.task_id %>" />
+                    <button type="submit">Delete Task</button>
+                </form>
+
+                <!-- Update Task Status Form -->
+                <form action="/updateTaskStatus" method="post">
+                    <input type="hidden" name="taskId" value="<%= task.task_id %>" />
+                    <select name="newStatus">
+                        <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                        <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                        <option value="overdue" <%= task.status === 'overdue' ? 'selected' : '' %>>Overdue</option>
+                    </select>
+                    <button type="submit">Update Status</button>
+                </form>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</body>
 </html>
