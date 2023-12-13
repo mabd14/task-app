@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+    <title>Register for <%=name%></title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <header>
+      <div class="menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="register">Register</a></li>
+        <li><a href="login">Login</a></li>
+    </div>
+    </header>
+    <h1>Register for <%=name%></h1>
+    <form method="POST" action="/registered">
+        <p>First Name: <input id="first" type="text" name="first"/></p>
+        <p>Last Name: <input id="last" type="text" name="last"/></p>
+        <p>Email: <input id="email" type="email" name="email"/></p>
+        <p>Username: <input id="username" type="text" name="username"/></p>
+        <p>Password: <input id="password" type="password" name="password"/></p>
+        <input type="submit" value="Register" />
+      </form>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css" />
+    <script src="/script.js"></script>
+</head>
+<body>    
+    <header>
+    <div class="menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="addtasks">Add Tasks</a></li>
+          <li><a href="viewtasks">View Tasks</a></li>
+          <li><a href="focus">Focus</a></li>
+          <li><a href="notes">Quick Notes</a></li>
+          <li><a href="logout">Logout</a></li>
+  </header>
+    <h1>Quick Notes</h1>
+
+    <!-- Form for adding a new note -->
+    <form action="/notes" method="post">
+        <!-- Dropdown for selecting the course -->
+        <label for="courseSelect">Course:</label>
+        <select id="courseSelect" name="courseId" required>
+            <% courses.forEach(course => { %>
+                <option value="<%= course.course_id %>"><%= course.course_name %></option>
+            <% }); %>
+        </select><br>
+
+        <label for="noteContent">New Note:</label>
+        <textarea id="noteContent" name="noteContent" required></textarea><br>
+        <input type="submit" value="Add Note">
+    </form>
+
+    <hr>
+
+    <!-- Section for displaying notes -->
+    <% if (notes.length > 0) { %>
+        <% notes.forEach(note => { %>
+            <div>
+                <h3>Note for <%= note.course_name %>:</h3>
+                <p><%= note.note_content %></p>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No notes available.</p>
+    <% } %>
+</body>
+</html>
