@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
   filterTasks('all'); // Show all tasks initially
+
+  searchTasks();
 });
 
 function setupPomodoroTimer() {
@@ -148,11 +150,11 @@ function showNewCourseInput() {
 
 function formatDate(dateString) {
   const options = {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-  };
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+};
+
   return new Date(dateString).toLocaleDateString("en-US", options);
 }
 function filterTasks(status) {
@@ -165,3 +167,18 @@ function filterTasks(status) {
         }
     });
   }
+
+  function searchTasks() {
+    const searchInput = document.getElementById('taskSearchInput').value.toLowerCase();
+    const tasks = document.querySelectorAll('.task-item');
+
+    tasks.forEach(task => {
+        const taskName = task.querySelector('.task-details').textContent.toLowerCase();
+        if (taskName.includes(searchInput)) {
+            task.style.display = '';
+        } else {
+            task.style.display = 'none';
+        }
+    });
+}
+  

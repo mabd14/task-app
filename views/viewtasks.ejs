@@ -21,7 +21,8 @@
     </header>
 
     <h1>Tasks</h1>
-    <div>
+    <input type="text" id="taskSearchInput" placeholder="Search Tasks..." oninput="searchTasks()">
+    <div class="task-button-container">
         <button onclick="filterTasks('all')">All Tasks</button>
         <button onclick="filterTasks('pending')">Pending Tasks</button>
         <button onclick="filterTasks('completed')">Completed Tasks</button>
@@ -33,28 +34,31 @@
             <div class="task-details">
                 <strong>Task Name:</strong> <%= task.task_name %><br />
                 <strong>Course:</strong> <%= task.course_name %><br />
-                <strong>Due Date:</strong> <%= task.due_date %><br />
+                <strong>Due Date:</strong> <span class="due-date"><%= task.due_date %></span><br />
                 <strong>Duration:</strong> <%= task.duration %> minutes<br />
                 <strong>Priority:</strong> <%= task.priority %><br />
                 <strong>Status:</strong> <%= task.status %><br />
             </div>
             <div class="task-actions">
-                <!-- Delete Task Form -->
-                <form action="/deleteTask" method="post">
-                    <input type="hidden" name="taskId" value="<%= task.task_id %>" />
-                    <button type="submit">Delete Task</button>
-                </form>
-
-                <!-- Update Task Status Form -->
-                <form action="/updateTaskStatus" method="post">
-                    <input type="hidden" name="taskId" value="<%= task.task_id %>" />
-                    <select name="newStatus">
-                        <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Pending</option>
-                        <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
-                        <option value="overdue" <%= task.status === 'overdue' ? 'selected' : '' %>>Overdue</option>
-                    </select>
-                    <button type="submit">Update Status</button>
-                </form>
+                <!-- Action Buttons Container -->
+                <div class="action-buttons">
+                    <!-- Delete Task Form -->
+                    <form action="/deleteTask" method="post" class="task-form">
+                        <input type="hidden" name="taskId" value="<%= task.task_id %>" />
+                        <button type="submit" class="task-button delete">Delete Task</button>
+                    </form>
+            
+                    <!-- Update Task Status Form -->
+                    <form action="/updateTaskStatus" method="post" class="task-form">
+                        <input type="hidden" name="taskId" value="<%= task.task_id %>" />
+                        <select name="newStatus" class="task-select">
+                            <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                            <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                            <option value="overdue" <%= task.status === 'overdue' ? 'selected' : '' %>>Overdue</option>
+                        </select>
+                        <button type="submit" class="task-button update">Update Status</button>
+                    </form>
+                </div>
             </div>
         </div>
         <% }); %>

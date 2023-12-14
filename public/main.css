@@ -12,7 +12,7 @@ a:hover {
 body {
     background-color: #222;
     color: rgb(206,214,243);
-    font-family: 'Public Pixel', sans-serif;
+    font-family: 'Public Pixel', sans-serif; /* Pixelated font */
 }
 
 .menu {
@@ -41,9 +41,6 @@ body {
     font-size: 50px;
   }
 
-
-
-
   ul {
     list-style: none;
 }
@@ -51,6 +48,7 @@ body {
 ul li {
     margin-bottom: 15px;
 }
+
 form {
     max-width: 500px;
     margin: 20px auto;
@@ -61,7 +59,10 @@ form {
 
 form p {
     margin: 10px 0;
+    font-family: 'Public Pixel', sans-serif; 
+
 }
+
 
 input {
     width: 100%;
@@ -70,24 +71,30 @@ input {
     display: inline-block;
     border: 1px solid #000; /* Solid black border for 8-bit style */
     box-sizing: border-box;
-    font-family: 'PixelatedFont', sans-serif; /* Pixelated font */
+    font-family: 'Public Pixel', sans-serif; 
     box-shadow: inset -4px -4px 0px 0px #41cdac; /* Pixel shadow effect */
 }
 
 input[type=submit] {
+    font-family: 'Public Pixel', sans-serif;
     width: 100%;
     background-color: #41cdac; /* Green background */
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    font-family: 'PixelatedFont', sans-serif; /* Pixelated font */
     box-shadow: inset -4px -4px 0px 0px #41cdac; /* Pixel shadow effect */
 }
 
 input[type=submit]:hover {
     background-color: #76c442; /* Slightly different green on hover */
     box-shadow: inset -6px -6px 0px 0px #41cdac; /* Increased shadow on hover */
+    transform: translateY(-3px); /* Slight lift effect on hover */
+}
+
+input[type="text"]::placeholder {
+    font-family: 'Public Pixel', sans-serif; 
+    opacity: 1;
 }
 
 button {
@@ -97,28 +104,48 @@ button {
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    font-family: 'PixelatedFont', sans-serif; /* Pixelated font */
+    font-family: 'Public Pixel', sans-serif; 
     box-shadow: inset -4px -4px 0px 0px #41cdac; /* Pixel shadow effect */
 }
 
 button:hover {
     background-color: #76c442; /* Slightly different green on hover */
     box-shadow: inset -6px -6px 0px 0px #41cdac; /* Increased shadow on hover */
+    transform: translateY(-3px); /* Slight lift effect on hover */
 }
 
 
-
+.quote-container {
+    font-size: 12px;
+    border-color: #41cdac;
+}
 
 
 .courseButtonContainer {
-    /* display: flex; */
-    justify-content: space-between;
+    display: flex;
+    justify-content: space-around; /* Adjusted for even spacing */
     width: 100%;
+    margin-top: 10px; /* Add some space above the button container */
 }
 
-.course-button {
-    size: 100%;
-    min-width: 50%;
+.courseButtonContainer button {
+    background-color: #41cdac; /* Green background */
+    padding: 12px 15px; /* Increase padding for better touch */
+    margin: 5px; /* Add margin around buttons */
+    border: none;
+    cursor: pointer;
+    font-family: 'Public Pixel', sans-serif;
+    box-shadow: inset -4px -4px 0px 0px #41cdac;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    text-transform: uppercase; /* Make text uppercase for style */
+    font-size: 1em; 
+    width: 45%; 
+}
+
+.courseButtonContainer button:hover {
+    background-color: #76c442; /* Slightly different green on hover */
+    box-shadow: inset -6px -6px 0px 0px #41cdac; /* Increased shadow on hover */
+    transform: translateY(-3px); /* Slight lift effect on hover */
 }
 
 
@@ -137,8 +164,50 @@ button:hover {
     transform: translateY(-3px); 
 }
   
+.task-actions .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-      
+.task-form {
+    display: flex;
+    margin: 0;
+    align-items: center;
+}
+
+.task-button {
+    background-color: #41cdac; /* Green background */
+    padding: 8px 12px;
+    margin-left: 5px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Public Pixel', sans-serif;
+    box-shadow: inset -4px -4px 0px 0px #41cdac;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+}
+
+.task-button.delete {
+    background-color: #ff6347; /* Red background for delete button */
+}
+
+.task-button:hover {
+    background-color: #76c442; /* Change on hover */
+    box-shadow: inset -6px -6px 0px 0px #41cdac;
+}
+
+.task-select {
+    padding: 8px;
+    border: 1px solid #000;
+    box-shadow: inset -4px -4px 0px 0px #41cdac;
+    font-family: 'Public Pixel', sans-serif;
+    background-color: white;
+    color: black;
+}
+
+
+
 
 @media screen and (max-width: 600px) {
     .menu {
@@ -157,10 +226,6 @@ button:hover {
     font-size: 2em;
     margin: 20px 0;
 }
-
-
-
-
 
 
 input[type=date] {

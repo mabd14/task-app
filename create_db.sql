@@ -42,7 +42,9 @@ CREATE TABLE c_notes (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-DELIMITER $$
+
+-- Get Tasks stored proc
+DELIMITER //
 
 CREATE PROCEDURE GetTasksForUser(IN user_id INT)
 BEGIN
@@ -50,6 +52,24 @@ BEGIN
     FROM tasks 
     INNER JOIN courses ON tasks.course_id = courses.course_id 
     WHERE tasks.user_id = user_id;
-END $$
+END //
+DELIMITER ;
+
+
+-- register user stored proc
+DELIMITER //
+
+CREATE PROCEDURE RegisterUser(
+    IN p_first_name VARCHAR(255),
+    IN p_last_name VARCHAR(255),
+    IN p_username VARCHAR(255),
+    IN p_email VARCHAR(255),
+    IN p_hashed_password VARCHAR(255)
+)
+BEGIN
+    INSERT INTO users (first_name, last_name, username, email, u_password) 
+    VALUES (p_first_name, p_last_name, p_username, p_email, p_hashed_password);
+END //
 
 DELIMITER ;
+

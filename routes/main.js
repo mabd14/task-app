@@ -39,8 +39,8 @@ module.exports = function (app, taskData) {
           return console.error(err.message);
         }
 
-        let sqlquery =
-          "INSERT INTO users (first_name,last_name,username,email,u_password) VALUES (?,?,?,?,?)";
+        // Call the stored procedure
+        let callProcedure = "CALL RegisterUser(?, ?, ?, ?, ?)";
         let newrecord = [
           req.body.first,
           req.body.last,
@@ -49,7 +49,7 @@ module.exports = function (app, taskData) {
           hashedPassword,
         ];
 
-        db.query(sqlquery, newrecord, (err, result) => {
+        db.query(callProcedure, newrecord, (err, result) => {
           if (err) {
             return console.error(err.message);
           } else {
@@ -228,6 +228,27 @@ module.exports = function (app, taskData) {
     });
   });
 
+  app.get("/searchTasks", redirectLogin, function (req, res) {
+    const searchTerm = req.query.term;
+    const loggedInUserId = req.session.userDbId;
+
+    let searchQuery = `
+      SELECT * FROM tasks 
+      WHERE user_id = ? AND task_name LIKE ?
+    `;
+    db.query(
+      searchQuery,
+      [loggedInUserId, `%${searchTerm}%`],
+      (err, results) => {
+        if (err) {
+          console.error("Error searching tasks:", err);
+          return res.status(500).send("Error searching tasks");
+        }
+        res.render("viewtasks.ejs", { tasks: results });
+      }
+    );
+  });
+
   app.get("/focus", redirectLogin, (req, res) => {
     res.render("pomo.ejs");
   });
@@ -244,7 +265,7 @@ module.exports = function (app, taskData) {
   app.get("/notes", function (req, res) {
     const userId = req.session.userDbId;
 
-    // Modified query to join q_notes with courses
+    // Modified query to join c_notes with courses
     const query = `
         SELECT c_notes.note_id, c_notes.note_content, courses.course_name 
         FROM c_notes 
