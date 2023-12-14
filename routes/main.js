@@ -308,7 +308,7 @@ module.exports = function (app, taskData) {
         console.error("Error adding note: ", err);
         return res.status(500).send("Error adding note");
       }
-      res.redirect("/notes");
+      res.redirect("./notes");
     });
   });
 
