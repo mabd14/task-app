@@ -53,3 +53,8 @@ Body-parser
 ```
 npm install body-parser
 ```
+
+Once you have a working SQL database and have downloaded these modules, then do:
+```
+node index.js
+```
