@@ -4,9 +4,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 
 
-  if (document.querySelector(".weather-container")) {
-      fetchWeather();
-  }
 
   if (document.getElementById("startStopBtn")) {
       setupPomodoroTimer();
@@ -109,32 +106,6 @@ function fetchStoicQuote() {
 function displayStoicText(data) {
   const quoteElement = document.getElementById("stoicQuote");
   quoteElement.textContent = `"${data.text}" - ${data.author}`;
-}
-
-// Weather API
-function fetchWeather() {
-  let city = "london";
-  let apiKey = "2315392e1494807887d2743404f0616f";
-  let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-
-  fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-          displayWeather(data);
-      })
-      .catch((err) => {
-          console.error("Error fetching weather:", err);
-      });
-}
-
-function displayWeather(data) {
-  const weatherContainer = document.createElement("div");
-  weatherContainer.innerHTML = `
-      <h2>Weather in ${data.name}</h2>
-      <p>Temperature: ${data.main.temp} °C</p>
-      <p>Weather: ${data.weather[0].main}</p>
-  `;
-  document.body.appendChild(weatherContainer);
 }
 
 function showCourseSelection() {
