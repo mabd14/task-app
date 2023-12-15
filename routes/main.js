@@ -21,6 +21,13 @@ module.exports = function (app, taskData) {
     res.render("index.ejs", data);
   });
 
+  app.get("/about", function(req,res) {
+    const data = {
+      ...taskData,
+      username: req.session.userId || null,
+    };
+    res.render("about.ejs", data)
+  })
   app.get("/register", function (req, res) {
     res.render("register.ejs", taskData);
   });

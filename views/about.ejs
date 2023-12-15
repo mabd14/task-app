@@ -2,7 +2,7 @@
 <html>
   <head>
     <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
-    <title>Welcome to <%=name%></title>
+    <title>About Scholar Flow </title>
     <link rel="stylesheet" href="/main.css" />
     <script src="/script.js"></script>
   </head>
@@ -12,18 +12,16 @@
       <div class="menu">
           <% if (username) { %>
             <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="about">About</a></li>
-              <li><a href="addtasks">Add Tasks</a></li>
-              <li><a href="viewtasks">View Tasks</a></li>
-              <li><a href="focus">Focus</a></li>
-              <li><a href="notes">Quick Notes</a></li>
-              <li><a href="logout">Logout</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="addtasks">Add Tasks</a></li>
+            <li><a href="viewtasks">View Tasks</a></li>
+            <li><a href="focus">Focus</a></li>
+            <li><a href="notes">Quick Notes</a></li>
+            <li><a href="logout">Logout</a></li>
             </ul>
           <% } else { %>
             <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="about">About</a></li>
             <li><a href="register">Register</a></li>
             <li><a href="login">Login</a></li>
             </ul>
@@ -37,14 +35,14 @@
     <h1 id = "welcome">Welcome to <%=name%></h1>
     <% } %>
 
-    <div class="quote-container">
-      <h2>Daily Stoic Quote</h2>
-      <p id="stoicQuote">Loading quote...</p>
-      <br>
-  </div>
-
   <div class="index-content">
-    <p>Welcome to Scholar Flow! <br> <br>The aim of Scholar Flow is to help you stay on track of school and the day to day tasks that you have.</p>
+    <p>The aim of Scholar Flow is to help you stay on track of school and the day to day tasks that you have.</p>
+    
+    <p>Here you can add tasks to keep on track, delete and filter tasks based on their status.</p>
+    
+    <p>You can also use the focus page to make use of the Pomodoro timer and focus.</p>
+    
+    <p>Or you can add a quick note to remember something for that course.</p>
   </div>
 
 
