@@ -262,7 +262,7 @@ module.exports = function (app, taskData) {
     });
   });
 
-  app.get("/notes", function (req, res) {
+  app.get("/notes", redirectLogin, function (req, res) {
     const userId = req.session.userDbId;
 
     // Modified query to join c_notes with courses
